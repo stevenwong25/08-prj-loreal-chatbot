@@ -94,6 +94,18 @@ let messages = [
 
 const workerUrl = 'https://lorealbot-worker.wsteven446.workers.dev';
 
+// Escape text before adding only the intended bold formatting as HTML.
+const formatAssistantReply = (text) => {
+  const escapedText = text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
+  return escapedText.replace(/\*\*([\s\S]+?)\*\*/g, "<strong>$1</strong>");
+};
+
 /* Handle form submit */
 chatForm.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -124,7 +136,9 @@ chatForm.addEventListener("submit", async (e) => {
     const assistantReply = data.choices[0].message.content;
     messages.push({ role: "assistant", content: assistantReply });
 
-    chatWindow.textContent = `You: ${userMessage}\n\nAssistant: ${assistantReply}`;
+    chatWindow.innerHTML =
+      `You: ${formatAssistantReply(userMessage)}\n\n` +
+      `Assistant: ${formatAssistantReply(assistantReply)}`;
   } catch (error) {
     console.error("Unable to get a response from the worker:", error);
     chatWindow.textContent =
