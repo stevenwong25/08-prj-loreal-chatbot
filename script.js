@@ -13,7 +13,11 @@ userInput.addEventListener("input", updateSendButton);
 updateSendButton();
 
 // Set initial message
-chatWindow.textContent = "👋 Hello! How can I help you today?";
+chatWindow.innerHTML =
+  '<div class="chat-message assistant-message">' +
+  '<span class="message-label">Assistant</span>' +
+  '<div class="message-bubble">👋 Hello! How can I help you today?</div>' +
+  "</div>";
 let messages = [
   { role: 'system', content: `You are an expert advisor focused primarily on L'Oréal products. Address questions and requests related to L'Oréal or its sub-brands in makeup, skincare, haircare, fragrances, as well as basic user information (such as user name) and conversation history. For unrelated topics outside these areas, respond courteously—either briefly assist with permissible information (e.g., names, prior exchanges), or gently redirect the user back to L'Oréal offerings or relevant beauty topics.
 
@@ -120,7 +124,15 @@ chatForm.addEventListener("submit", async (e) => {
 
   try {
     messages.push({ role: "user", content: userMessage });
-    chatWindow.textContent = `You: ${userMessage}\n\nThinking...`;
+    chatWindow.innerHTML =
+      `<div class="chat-message user-message">` +
+      `<span class="message-label">You</span>` +
+      `<div class="message-bubble">${formatAssistantReply(userMessage)}</div>` +
+      `</div>` +
+      `<div class="chat-message assistant-message">` +
+      `<span class="message-label">Assistant</span>` +
+      `<div class="message-bubble">Thinking...</div>` +
+      `</div>`;
 
     const response = await fetch(workerUrl, {
       method: "POST",
@@ -137,12 +149,21 @@ chatForm.addEventListener("submit", async (e) => {
     messages.push({ role: "assistant", content: assistantReply });
 
     chatWindow.innerHTML =
-      `You: ${formatAssistantReply(userMessage)}\n\n` +
-      `Assistant: ${formatAssistantReply(assistantReply)}`;
+      `<div class="chat-message user-message">` +
+      `<span class="message-label">You</span>` +
+      `<div class="message-bubble">${formatAssistantReply(userMessage)}</div>` +
+      `</div>` +
+      `<div class="chat-message assistant-message">` +
+      `<span class="message-label">Assistant</span>` +
+      `<div class="message-bubble">${formatAssistantReply(assistantReply)}</div>` +
+      `</div>`;
   } catch (error) {
     console.error("Unable to get a response from the worker:", error);
-    chatWindow.textContent =
-      "Sorry, something went wrong. Please try again.";
+    chatWindow.innerHTML =
+      '<div class="chat-message assistant-message">' +
+      '<span class="message-label">Assistant</span>' +
+      '<div class="message-bubble">Sorry, something went wrong. Please try again.</div>' +
+      "</div>";
   } finally {
     updateSendButton();
   }
