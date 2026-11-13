@@ -85,12 +85,41 @@ let messages = [
 const workerUrl = 'https://lorealbot-worker.wsteven446.workers.dev';
 
 /* Handle form submit */
-chatForm.addEventListener("submit", (e) => {
+chatForm.addEventListener("submit", async (e) => {
   e.preventDefault();
-  
-  // When using Cloudflare, you'll need to POST a `messages` array in the body,
-  // and handle the response using: data.choices[0].message.content
 
-  // Show message
-  chatWindow.innerHTML = "Connect to the OpenAI API for a response!";
+  const userMessage = userInput.value.trim();
+  if (userMessage === "") {
+    return;
+  }
+
+  userInput.value = "";
+  sendBtn.disabled = true;
+
+  try {
+    messages.push({ role: "user", content: userMessage });
+    chatWindow.textContent = `You: ${userMessage}\n\nThinking...`;
+
+    const response = await fetch(workerUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ messages }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Worker request failed with status ${response.status}`);
+    }
+
+    const data = await response.json();
+    const assistantReply = data.choices[0].message.content;
+    messages.push({ role: "assistant", content: assistantReply });
+
+    chatWindow.textContent = `You: ${userMessage}\n\nAssistant: ${assistantReply}`;
+  } catch (error) {
+    console.error("Unable to get a response from the worker:", error);
+    chatWindow.textContent =
+      "Sorry, something went wrong. Please try again.";
+  } finally {
+    updateSendButton();
+  }
 });
