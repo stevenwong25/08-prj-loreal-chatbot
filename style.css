@@ -176,3 +176,89 @@ body {
 .site-footer a:hover {
   color: #666666;
 }
+
+/* tablet layout */
+@media (max-width: 1042px) {
+  .page-wrapper {
+    width: 94%;
+  }
+
+  .site-header {
+    padding-top: 32px;
+  }
+
+  .chatbox {
+    margin: 28px 0;
+  }
+
+  .chat-window {
+    height: 55vh;
+    min-height: 360px;
+  }
+
+  .chat-message {
+    max-width: 88%;
+  }
+
+  .message-bubble {
+    font-size: 18px;
+  }
+
+  .message-label {
+    font-size: 13px;
+  }
+}
+
+/* phone layout */
+@media (max-width: 480px) {
+  .page-wrapper {
+    width: 96%;
+  }
+
+  .site-title {
+    font-size: 19px;
+  }
+
+  .chatbox {
+    margin: 20px 0;
+  }
+
+  .chat-window {
+    height: 60vh;
+    min-height: 320px;
+    padding: 18px 12px;
+  }
+
+  .chat-message {
+    max-width: 94%;
+  }
+
+  .message-bubble {
+    padding: 10px 12px;
+    font-size: 15px;
+  }
+
+  .chat-form {
+    gap: 8px;
+  }
+
+  .chat-form input {
+    min-width: 0;
+    font-size: 16px;
+  }
+
+  .site-footer {
+    margin: 40px 0 24px;
+  }
+
+  .site-footer nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .site-footer a {
+    margin: 0 4px;
+  }
+}
