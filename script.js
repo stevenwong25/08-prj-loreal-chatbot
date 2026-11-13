@@ -2,6 +2,15 @@
 const chatForm = document.getElementById("chatForm");
 const userInput = document.getElementById("userInput");
 const chatWindow = document.getElementById("chatWindow");
+const sendBtn = document.getElementById("sendBtn");
+
+// Keep the send button disabled until the user enters a message.
+const updateSendButton = () => {
+  sendBtn.disabled = userInput.value.trim() === "";
+};
+
+userInput.addEventListener("input", updateSendButton);
+updateSendButton();
 
 // Set initial message
 chatWindow.textContent = "👋 Hello! How can I help you today?";

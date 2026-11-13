@@ -102,6 +102,11 @@ body {
   background: #666666;
 }
 
+.chat-form button:disabled {
+  background: #d3d3d3;
+  cursor: not-allowed;
+}
+
 .chat-form button:focus {
   outline: 2px solid #000;
   outline-offset: 2px;
