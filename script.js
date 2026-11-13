@@ -98,7 +98,7 @@ let messages = [
 
 const workerUrl = 'https://lorealbot-worker.wsteven446.workers.dev';
 
-// Escape text before adding only the intended bold formatting as HTML.
+// Escape text before adding only the intended formatting as HTML.
 const formatAssistantReply = (text) => {
   const escapedText = text
     .replace(/&/g, "&amp;")
@@ -107,7 +107,10 @@ const formatAssistantReply = (text) => {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
 
-  return escapedText.replace(/\*\*([\s\S]+?)\*\*/g, "<strong>$1</strong>");
+  return escapedText.replace(
+    /\*+([^*\n]+?)\*+/g,
+    "<strong>$1</strong>",
+  );
 };
 
 /* Handle form submit */
